@@ -8,25 +8,37 @@ const router = express.Router();
 
 // ثبت‌نام کاربر جدید
 router.post("/register", async (req, res) => {
-  try {
-    const { firstName, lastName, email, phoneNumber, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      password: hashedPassword,
-    });
-
-    await newUser.save();
-    res.status(201).json({ message: "کاربر با موفقیت ثبت شد" });
-  } catch (error) {
-    res.status(500).json({ message: "خطا در ثبت‌نام", error });
-  }
-});
-
+    try {
+      const { firstName, lastName, email, phoneNumber, password, role, languages, experienceYears, resume } = req.body;
+  
+      // بررسی اطلاعات اضافی برای مترجم‌ها
+      if (role === "translator") {
+        if (!skills  || !description || !address) {
+          return res.status(400).json({ message: "لطفاً اطلاعات کامل مترجم را وارد کنید" });
+        }
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const newUser = new User({
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password: hashedPassword,
+        role: role || "user", // نقش پیش‌فرض: کاربر ساده
+        languages: role === "translator" ? languages : null,
+        experienceYears: role === "translator" ? experienceYears : null,
+        resume: role === "translator" ? resume : null,
+      });
+  
+      await newUser.save();
+      res.status(201).json({ message: "کاربر با موفقیت ثبت شد" });
+    } catch (error) {
+      res.status(500).json({ message: "خطا در ثبت‌نام", error });
+    }
+  });
+  
 // ورود کاربر و دریافت توکن
 router.post("/login", async (req, res) => {
   try {
@@ -46,12 +58,13 @@ router.post("/login", async (req, res) => {
 
 // گرفتن اطلاعات کاربری
 router.get("/me", verifyUser, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "خطا در دریافت اطلاعات کاربر", error });
-  }
-});
+    try {
+      const user = await User.findById(req.user.id).select("-password");
+      res.status(200).json(user); 
+    } catch (error) {
+      res.status(500).json({ message: "خطا در دریافت اطلاعات کاربر", error });
+    }
+  });
+  
 
 module.exports = router;
