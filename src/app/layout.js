@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,8 +24,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable}  ${geistMono.variable} antialiased`}
       >
+        <ToastContainer
+          position="top-right" // محل نمایش
+          autoClose={5000} // زمان بسته شدن خودکار
+          hideProgressBar={false} // نمایش نوار پیشرفت
+          newestOnTop={false} // نمایش جدیدترین پیام‌ها در بالا
+          closeOnClick // بستن با کلیک
+          rtl={true} // حالت راست به چپ برای زبان فارسی
+          pauseOnFocusLoss // توقف تایمر هنگام فوکوس
+          draggable // قابلیت درگ کردن
+          pauseOnHover // توقف تایمر با هاور
+          theme="colored" // تم رنگی
+        />
+
         <div>
           <Navbar />
           <main>{children}</main>

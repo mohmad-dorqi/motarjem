@@ -43,7 +43,7 @@ const images = [
   "/Image/Capture.PNG", // مسیر عکس اول
   "/Image/Capture.PNG", // مسیر عکس اول
   "/Image/Capture.PNG", // مسیر عکس اول
-  "/Image/Capture.PNG", // مسیر عکس اول
+  "/Image//me.jpg", // مسیر عکس اول
  
 ];
 export default function Home() {

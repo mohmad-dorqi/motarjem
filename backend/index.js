@@ -5,6 +5,7 @@ const cors = require("cors");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
 const commentRoutes = require("./routes/commentRoutes");
+const profile = require("./routes/profile");
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/comment", commentRoutes);
+app.use("/api/profile", profile);
 
 // MongoDB Connection
 mongoose
